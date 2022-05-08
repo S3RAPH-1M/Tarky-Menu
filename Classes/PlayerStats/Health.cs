@@ -21,6 +21,8 @@ namespace Tarky_Menu.Classes.PlayerStats
         public ConfigEntry<Boolean> Godmode { get; private set; }
         public ConfigEntry<KeyCode> Heal { get; private set; }
         public ConfigEntry<Boolean> NoFall { get; private set; }
+        public ConfigEntry<Boolean> HungerEnergyDrain { get; private set; }
+
 
 
         public void Awake()
@@ -28,7 +30,7 @@ namespace Tarky_Menu.Classes.PlayerStats
             this.Godmode = Instance.Config.Bind("Cheats", "Godmode", false, "Invincible");
             this.Heal = Instance.Config.Bind("Misc | Random Test Stuff", "Heal", KeyCode.None);
             this.NoFall = Instance.Config.Bind("Cheats", "No Fall Damage", false);
-
+            this.HungerEnergyDrain = Instance.Config.Bind("Cheats", "No Energy/Hunger Drain", false);
         }
 
         public void godMod()
@@ -59,6 +61,12 @@ namespace Tarky_Menu.Classes.PlayerStats
                 {
                     Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Common);
                     Instance.LocalPlayer.ActiveHealthController.RestoreFullHealth();
+                }
+
+                if (HungerEnergyDrain.Value)
+                {
+                    Instance.LocalPlayer.ActiveHealthController.ChangeEnergy(1000f);
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHydration(1000f);
                 }
             }
         }

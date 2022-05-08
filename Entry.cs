@@ -34,22 +34,12 @@ namespace Tarky_Menu
         public Player LocalPlayer { get; private set; }
 
         public static Entry Instance { get; private set; }
-        public ConfigEntry<Boolean> HungerEnergyDrain { get; private set; }
-        public ConfigEntry<Boolean> StrengthControl { get; private set; }
-        public ConfigEntry<Single> StrengthValue { get; private set; }
         public ConfigEntry<KeyCode> KillSelf { get; private set; }
         public ConfigEntry<Boolean> KillAll { get; private set; }
-        public ConfigEntry<Boolean> NightVision { get; private set; }
-        public ConfigEntry<Boolean> Speedhack { get; private set; }
         public ConfigEntry<KeyCode> FOVButton { get; private set; }
         void Awake()
         {
             Instance = this;
-            this.NightVision = this.Config.Bind("Cheats", "NVG Toggle", false, "Toggle NVG");
-            this.Speedhack = this.Config.Bind("Cheats", "Speedhack", false, "");
-            this.HungerEnergyDrain = this.Config.Bind("Cheats", "No Energy/Hunger Drain", false);
-            this.StrengthControl = this.Config.Bind("Cheats", "Strength Control", false);
-            this.StrengthValue = this.Config.Bind("Cheats", "Strength Value", 1f);
             this.KillSelf = this.Config.Bind("Misc | Random Test Stuff", "Kill Yourself", KeyCode.None, "This is so sad :(");
             this.KillAll = this.Config.Bind("Misc | Random Test Stuff", "Kill all", false, "Genocide :D");
             _recoilControlSystem = new Classes.RecoilControlSystem();
@@ -91,13 +81,14 @@ namespace Tarky_Menu
             _recoilControlSystem.NoRecoil();
             _health.godMod();
             _cameraUtils.CameraStuff();
+            _cameraUtils.NightVisionHax();
             _worldUtils.DoorUnlocker();
-
+            
             if (Instance.LocalPlayer != null && Instance.LocalPlayer.ActiveHealthController != null)
             {
                 if (Input.GetKeyDown(KillSelf.Value))
                 {
-                    LocalPlayer.ActiveHealthController.ApplyDamage(EBodyPart.Head, 99999, default);
+                    LocalPlayer.ActiveHealthController.Kill(EDamageType.Existence);
                 }
 
                 if (KillAll.Value)
@@ -109,9 +100,6 @@ namespace Tarky_Menu
                     }
                 }
             }
-
-
-
         }
     }
 }
