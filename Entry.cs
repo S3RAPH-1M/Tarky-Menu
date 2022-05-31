@@ -37,11 +37,19 @@ namespace Tarky_Menu
         public ConfigEntry<KeyCode> KillSelf { get; private set; }
         public ConfigEntry<Boolean> KillAll { get; private set; }
         public ConfigEntry<KeyCode> FOVButton { get; private set; }
+        public ConfigEntry<KeyCode> TPAll { get; private set; }
+        public ConfigEntry<KeyCode> TPUsec { get; private set; }
+        public ConfigEntry<KeyCode> TPBear { get; private set; }
+        public ConfigEntry<KeyCode> TPScav { get; private set; }
         void Awake()
         {
             Instance = this;
             this.KillSelf = this.Config.Bind("Misc | Random Test Stuff", "Kill Yourself", KeyCode.None, "This is so sad :(");
             this.KillAll = this.Config.Bind("Misc | Random Test Stuff", "Kill all", false, "Genocide :D");
+            this.TPAll = this.Config.Bind("Misc | Random Test Stuff", "TP All 2 U", KeyCode.None);
+            this.TPUsec = this.Config.Bind("Misc | Random Test Stuff", "TP All Usec 2 U", KeyCode.None);
+            this.TPBear = this.Config.Bind("Misc | Random Test Stuff", "TP All Bear 2 U", KeyCode.None);
+            this.TPScav = this.Config.Bind("Misc | Random Test Stuff", "TP All Scav 2 U", KeyCode.None);
             _recoilControlSystem = new Classes.RecoilControlSystem();
             _skillzClass = new Classes.PlayerStats.SkillzClass();
             _health = new Classes.PlayerStats.Health();
@@ -83,7 +91,7 @@ namespace Tarky_Menu
             _cameraUtils.CameraStuff();
             _cameraUtils.NightVisionHax();
             _worldUtils.DoorUnlocker();
-            
+
             if (Instance.LocalPlayer != null && Instance.LocalPlayer.ActiveHealthController != null)
             {
                 if (Input.GetKeyDown(KillSelf.Value))
@@ -97,6 +105,51 @@ namespace Tarky_Menu
                     foreach (var player in players)
                     {
                         player.ActiveHealthController.Kill(EDamageType.Existence);
+                    }
+                }
+
+                if (Input.GetKeyDown(TPAll.Value))
+                {
+                    var players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+                    foreach (var player in players)
+                    {
+                        player.Teleport(LocalPlayer.Transform.position);
+                    }
+                }
+
+                if (Input.GetKeyDown(TPScav.Value))
+                {
+                    var players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+                    foreach (var player in players)
+                    {
+                        if (player.Profile.Side == EPlayerSide.Savage)
+                        {
+                            player.Teleport(LocalPlayer.Transform.position);
+                        }
+                    }
+                }
+
+                if (Input.GetKeyDown(TPUsec.Value))
+                {
+                    var players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+                    foreach (var player in players)
+                    {
+                        if (player.Profile.Side == EPlayerSide.Usec)
+                        {
+                            player.Teleport(LocalPlayer.Transform.position);
+                        }
+                    }
+                }
+
+                if (Input.GetKeyDown(TPBear.Value))
+                {
+                    var players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+                    foreach (var player in players)
+                    {
+                        if (player.Profile.Side == EPlayerSide.Bear)
+                        {
+                            player.Teleport(LocalPlayer.Transform.position);
+                        }
                     }
                 }
             }
