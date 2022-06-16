@@ -101,3 +101,7 @@ D:\VS-Projects\Tarky-Menu\Tarky-Menu\obj\Debug\Tarky-Menu.csproj.CoreCompileInpu
 D:\VS-Projects\Tarky-Menu\Tarky-Menu\obj\Debug\Tarky-Menu.csproj.CopyComplete
 D:\VS-Projects\Tarky-Menu\Tarky-Menu\obj\Debug\Tarky-Menu.dll
 D:\VS-Projects\Tarky-Menu\Tarky-Menu\obj\Debug\Tarky-Menu.pdb
+D:\VS-Projects\Tarky-Menu\Tarky-Menu\bin\Debug\Aki.Reflection.dll
+D:\VS-Projects\Tarky-Menu\Tarky-Menu\bin\Debug\ConfigurationManager.xml
+D:\VS-Projects\Tarky-Menu\Tarky-Menu\bin\Debug\Aki.Build.dll
+D:\VS-Projects\Tarky-Menu\Tarky-Menu\bin\Debug\Aki.Common.dll

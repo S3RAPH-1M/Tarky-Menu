@@ -30,13 +30,13 @@ namespace Tarky_Menu.Classes
 
         public void Awake()
         {
-            this.NoRecoilExtreme = Instance.Config.Bind("Cheats | Recoil", "No Recoil Xtreme", false, "I cant think of anything to put here");
-            this.RCSToggle = Instance.Config.Bind("Cheats | Recoil", "Recoil Control System", false, "Recoil Control Toggle");
-            this.RecoilIntensityValue = Instance.Config.Bind("Cheats | Recoil", "Recoil Intensity Value", 1f);
-            this.ShootingStiffnessValue = Instance.Config.Bind("Cheats | Recoil", "Shooting Stiffness Value", 1f);
-            this.ForceReactIntensityValue = Instance.Config.Bind("Cheats | Recoil", "Force Reaction Value", 1f);
-            this.MotionReactIntesityValue = Instance.Config.Bind("Cheats | Recoil", "Motion Reaction Value", 1f);
-            this.BreathIntensityValue = Instance.Config.Bind("Cheats | Recoil", "Breath Intensity Value", 1f);
+            this.NoRecoilExtreme = Instance.Config.Bind("Weapon | Recoil", "No Recoil Xtreme", false, "I cant think of anything to put here");
+            this.RCSToggle = Instance.Config.Bind("Weapon | Recoil", "Recoil Control System", false, "Recoil Control Toggle");
+            this.RecoilIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Recoil Intensity Value", 1f);
+            this.ShootingStiffnessValue = Instance.Config.Bind("Weapon | Recoil", "Shooting Stiffness Value", 1f);
+            this.ForceReactIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Force Reaction Value", 1f);
+            this.MotionReactIntesityValue = Instance.Config.Bind("Weapon | Recoil", "Motion Reaction Value", 1f);
+            this.BreathIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Breath Intensity Value", 1f);
         }
 
         public void NoRecoil()

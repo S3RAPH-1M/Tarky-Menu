@@ -22,6 +22,7 @@ namespace Tarky_Menu.Classes.Misc
         public ConfigEntry<KeyCode> ThermalButton { get; private set; }
         public ConfigEntry<Boolean> ThermalToggle { get; private set; }
         public ConfigEntry<Boolean> HideOverlay { get; private set; }
+        public ConfigEntry<Boolean> NoEffects { get; private set; }
         public ConfigEntry<KeyCode> FOVButton { get; private set; }
         public ConfigEntry<KeyCode> NVGButton { get; private set; }
         public ConfigEntry<Boolean> NVGButtonToggle { get; private set; }
@@ -33,14 +34,15 @@ namespace Tarky_Menu.Classes.Misc
 
         public void Awake()
         {
-            this.HideOverlay = Instance.Config.Bind("Misc | Random Test Stuff", "Hide Helmet Overlay", false);
-            this.FOVEnabled = Instance.Config.Bind("Misc | FOV Settings", "FOV Enabled", false, "Description");
-            this.FOV = Instance.Config.Bind("Misc | FOV Settings", "FOV Amount", 65f, "Your FOV Amount");
-            this.FOVButton = Instance.Config.Bind("Misc | FOV Settings", "FOV Button", KeyCode.None);
-            this.NVGButton = Instance.Config.Bind("Misc | FOV Settings", "NVG Button", KeyCode.None);
-            this.ThermalButton = Instance.Config.Bind("Cheats", "Thermal Button", KeyCode.None);
-            this.ThermalToggle = Instance.Config.Bind("Cheats", "Thermal Toggle", false, "Toggle Thermals");
-            this.NVGCheckbox = Instance.Config.Bind("Misc | FOV Settings", "NVG Toggle", false, "Toggle NVG");
+            this.HideOverlay = Instance.Config.Bind("Player | Camera", "Hide Helmet Overlay", false);
+            this.NoEffects = Instance.Config.Bind("Player | Camera", "No More ScreenShake & Blood", false);
+            this.FOVEnabled = Instance.Config.Bind("Player | Camera", "FOV Enabled", false, "Description");
+            this.FOV = Instance.Config.Bind("Player | Camera", "FOV Amount", 65f, "Your FOV Amount");
+            this.FOVButton = Instance.Config.Bind("Player | Camera", "FOV Button", KeyCode.None);
+            this.NVGButton = Instance.Config.Bind("Player | Camera", "NVG Button", KeyCode.None);
+            this.ThermalButton = Instance.Config.Bind("Player | Camera", "Thermal Button", KeyCode.None);
+            this.ThermalToggle = Instance.Config.Bind("Player | Camera", "Thermal Toggle", false, "Toggle Thermals");
+            this.NVGCheckbox = Instance.Config.Bind("Player | Camera", "NVG Toggle", false, "Toggle NVG");
         }
 
         public void CameraStuff()
@@ -63,7 +65,12 @@ namespace Tarky_Menu.Classes.Misc
                 {
                     cameraClass.Instance.VisorEffect.enabled = !HideOverlay.Value;
                 }
-                
+
+                if (NoEffects.Value && cameraClass.Instance.EffectsController != null)
+                {
+                    cameraClass.Instance.EffectsController.enabled = !HideOverlay.Value;
+                }
+
                 if (Input.GetKeyDown(ThermalButton.Value))
                 {
                     ThermalToggle.Value = !ThermalToggle.Value; 

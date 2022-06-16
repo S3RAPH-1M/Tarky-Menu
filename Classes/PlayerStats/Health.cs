@@ -19,6 +19,7 @@ namespace Tarky_Menu.Classes.PlayerStats
     internal class Health
     {
         public ConfigEntry<Boolean> Godmode { get; private set; }
+        public ConfigEntry<Boolean> Demigod { get; private set; }
         public ConfigEntry<KeyCode> Heal { get; private set; }
         public ConfigEntry<Boolean> NoFall { get; private set; }
         public ConfigEntry<Boolean> HungerEnergyDrain { get; private set; }
@@ -27,10 +28,11 @@ namespace Tarky_Menu.Classes.PlayerStats
 
         public void Awake()
         {
-            this.Godmode = Instance.Config.Bind("Cheats", "Godmode", false, "Invincible");
-            this.Heal = Instance.Config.Bind("Misc | Random Test Stuff", "Heal", KeyCode.None);
-            this.NoFall = Instance.Config.Bind("Cheats", "No Fall Damage", false);
-            this.HungerEnergyDrain = Instance.Config.Bind("Cheats", "No Energy/Hunger Drain", false);
+            this.Godmode = Instance.Config.Bind("Player | Health", "Godmode", false, "Invincible");
+            this.Demigod = Instance.Config.Bind("Player | Health", "Demi-God (NOTWORKING)", false, "Only ur head and thorax are invincible");
+            this.Heal = Instance.Config.Bind("Player | Health", "Heal", KeyCode.None);
+            this.NoFall = Instance.Config.Bind("Player | Health", "No Fall Damage", false);
+            this.HungerEnergyDrain = Instance.Config.Bind("Player | Health", "No Energy/Hunger Drain", false);
         }
 
         public void godMod()
@@ -46,6 +48,14 @@ namespace Tarky_Menu.Classes.PlayerStats
                 else
                 {
                     Instance.LocalPlayer.ActiveHealthController.SetDamageCoeff(1f);
+                }
+
+                if (Demigod.Value)
+                {
+                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Head);
+                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, 2147483640, default);
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, 2147483640, default);
                 }
 
                 if (NoFall.Value)
