@@ -68,7 +68,9 @@ namespace Tarky_Menu.Classes.Misc
 
                 if (NoEffects.Value && cameraClass.Instance.EffectsController != null)
                 {
-                    cameraClass.Instance.EffectsController.enabled = !HideOverlay.Value;
+                    cameraClass.Instance.EffectsController.enabled = !NoEffects.Value;
+                    cameraClass.Instance.Camera.GetComponent<CC_Blend>().enabled = !NoEffects.Value;
+                    cameraClass.Instance.Camera.GetComponent<CC_Wiggle>().enabled = !NoEffects.Value;
                 }
 
                 if (Input.GetKeyDown(ThermalButton.Value))

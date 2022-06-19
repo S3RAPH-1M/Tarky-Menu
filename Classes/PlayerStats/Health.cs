@@ -18,6 +18,8 @@ namespace Tarky_Menu.Classes.PlayerStats
 {
     internal class Health
     {
+        private static String[] TargetBones = {"head", "spine3"};
+        
         public ConfigEntry<Boolean> Godmode { get; private set; }
         public ConfigEntry<Boolean> Demigod { get; private set; }
         public ConfigEntry<KeyCode> Heal { get; private set; }
@@ -54,8 +56,11 @@ namespace Tarky_Menu.Classes.PlayerStats
                 {
                     Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Head);
                     Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);
-                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, 2147483640, default);
-                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, 2147483640, default);
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, 2147483640, new DamageInfo());
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, 2147483640, new DamageInfo());
+                    foreach (Transform child in EnumerateHierarchyCore(Instance.LocalPlayer.gameObject.transform).Where(t => TargetBones.Any(u => t.name.ToLower().Contains(u)))) {
+                        child.gameObject.layer = LayerMask.NameToLayer("PlayerSpiritAura");
+                    }
                 }
 
                 if (NoFall.Value)
@@ -78,6 +83,25 @@ namespace Tarky_Menu.Classes.PlayerStats
                     Instance.LocalPlayer.ActiveHealthController.ChangeEnergy(1000f);
                     Instance.LocalPlayer.ActiveHealthController.ChangeHydration(1000f);
                 }
+            }
+        }
+        
+        private static IEnumerable<Transform> EnumerateHierarchyCore(Transform root) {
+            Queue<Transform> transformQueue = new Queue<Transform>();
+            transformQueue.Enqueue(root);
+
+            while (transformQueue.Count > 0) {
+                Transform parentTransform = transformQueue.Dequeue();
+
+                if (!parentTransform) {
+                    continue;
+                }
+
+                for (Int32 i = 0; i < parentTransform.childCount; i++) {
+                    transformQueue.Enqueue(parentTransform.GetChild(i));
+                }
+
+                yield return parentTransform;
             }
         }
     }

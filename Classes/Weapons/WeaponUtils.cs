@@ -20,7 +20,7 @@ namespace Tarky_Menu.Classes.Weapons {
 
 		public void FireMod() 
 		{
-			if (AllFireModes.Value && Instance.LocalPlayer != null)
+			if (AllFireModes.Value && Instance.LocalPlayer != null || AllFireModes.Value && Instance.HideoutPlayer)
 			{
 				if (Instance.LocalPlayer.HandsController is Player.FirearmController controller)
 				{
