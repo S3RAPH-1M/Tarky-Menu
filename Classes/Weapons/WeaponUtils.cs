@@ -9,7 +9,7 @@ namespace Tarky_Menu.Classes.Weapons {
 		
 		public ConfigEntry<Boolean> AllFireModes { get; private set; }
 
-		private Weapon.EFireMode[] AllModes = new Weapon.EFireMode[] { (Weapon.EFireMode)0, (Weapon.EFireMode)1, (Weapon.EFireMode)2, (Weapon.EFireMode)3, (Weapon.EFireMode)4 };
+		private Weapon.EFireMode[] AllModes = new Weapon.EFireMode[] { (Weapon.EFireMode)0, (Weapon.EFireMode)1, (Weapon.EFireMode)2, (Weapon.EFireMode)3, (Weapon.EFireMode)4, (Weapon.EFireMode)5 };
 
 		
 		public void Awake()

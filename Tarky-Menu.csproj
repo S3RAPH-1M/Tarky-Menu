@@ -35,6 +35,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="aki-bundles">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\aki-bundles.dll</HintPath>
+    </Reference>
+    <Reference Include="aki-core">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\aki-core.dll</HintPath>
+    </Reference>
+    <Reference Include="aki-custom">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\aki-custom.dll</HintPath>
+    </Reference>
+    <Reference Include="aki-debugging">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\aki-debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="aki-singleplayer">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\aki-singleplayer.dll</HintPath>
+    </Reference>
     <Reference Include="Aki.Build">
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\Aki.Build.dll</HintPath>
     </Reference>
@@ -44,9 +59,7 @@
     <Reference Include="Aki.Reflection">
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\Aki.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
+    <Reference Include="AnimationSystem.Types, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -54,6 +67,9 @@
     <Reference Include="BepInEx, Version=5.4.19.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="bsg.console.core">
+      <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\bsg.console.core.dll</HintPath>
     </Reference>
     <Reference Include="Comfort, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -122,15 +138,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Misc\CameraUtils.cs" />
-    <Compile Include="Classes\Misc\ExhaustionPatch.cs" />
     <Compile Include="Classes\Misc\WorldUtils.cs" />
     <Compile Include="Classes\Patches\LocationSecnePatch.cs" />
     <Compile Include="Classes\PlayerStats\Health.cs" />
     <Compile Include="Classes\PlayerStats\SkillzClass.cs" />
+    <Compile Include="Classes\Weapons\InfiniteAmmo.cs" />
     <Compile Include="Classes\Weapons\RecoilControlSystem.cs" />
     <Compile Include="Classes\Weapons\WeaponUtils.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SERVPH-API\SERVPH-API.csproj">
+      <Project>{65c23d64-9d5a-413a-a0f1-fc9013cb38dc}</Project>
+      <Name>SERVPH-API</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

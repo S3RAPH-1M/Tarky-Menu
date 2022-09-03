@@ -7,6 +7,8 @@ using BepInEx.Configuration;
 using Comfort.Common;
 using EFT;
 using EFT.Interactive;
+using EFT.MovingPlatforms;
+using EFT.SynchronizableObjects;
 using EFT.UI;
 using Tarky_Menu.Classes;
 using Tarky_Menu.Classes.Misc;
@@ -44,12 +46,20 @@ namespace Tarky_Menu {
 		public ConfigEntry<KeyCode> TPUsec { get; private set; }
 		public ConfigEntry<KeyCode> TPBear { get; private set; }
 		public ConfigEntry<KeyCode> TPScav { get; private set; }
+		public ConfigEntry<bool> InfAmmo { get; private set; }
 		public ConfigEntry<KeyCode> TPCrate { get; private set; }
 		public ConfigEntry<Boolean> NoRagdollStop { get; private set; }
 		public ConfigEntry<KeyCode> MineRemover { get; private set; }
 		public ConfigEntry<KeyCode> SniperRemover { get; private set; }
+		public ConfigEntry<Boolean> TacSprint { get; private set; }
+		public ConfigEntry<Boolean> CloseWeapon { get; private set; }
+		public ConfigEntry<Boolean> InstaKill { get; private set; }
+		public ConfigEntry<Boolean> ReserveTrain { get; private set; }
+		public ConfigEntry<KeyCode> ReserveTrainButton { get; private set; }
+		public ConfigEntry<KeyCode> RemoveAllExfils { get; private set; }
+		public ConfigEntry<KeyCode> TacSprintButton { get; private set; }
 
-		private void Awake() {
+        private void Awake() {
 			Instance = this;
 			this.KillSelf = this.Config.Bind("Player | Health", "Kill Yourself", KeyCode.None, "This is so sad :(");
 			this.KillAll = this.Config.Bind("World | AI", "Kill all", false, "Genocide :D");
@@ -61,6 +71,15 @@ namespace Tarky_Menu {
 			this.NoRagdollStop = this.Config.Bind("World | AI", "Ragdolls Never Freeze", false, "Has virtually no impact on performance, And looks really good :)");
 			this.MineRemover = this.Config.Bind("World | Misc", "Mine Remover", KeyCode.None);
 			this.SniperRemover = this.Config.Bind("World | Misc", "Sniper Remover", KeyCode.None);
+			this.TacSprintButton = this.Config.Bind("Weapons | Animations", "Tac Sprint", KeyCode.None);
+			this.TacSprint = this.Config.Bind("Weapons | Animations", "Tac Sprint Toggle", false);
+			this.InfAmmo = this.Config.Bind("Weapons | Misc", "Infinite Ammo", false);
+			this.RemoveAllExfils = this.Config.Bind("World | Misc", "Remove All Exfils", KeyCode.None);
+			this.CloseWeapon = this.Config.Bind("Weapon | Misc", "Never Have Weapons Closer", false);
+			this.InstaKill = this.Config.Bind("World | AI", "One Shot AI", false);
+			//this.ReserveTrainButton = this.Config.Bind("World | World", "Summon Reserve Train Button", KeyCode.None);
+            this.ReserveTrain = this.Config.Bind("World | World", "Summon Reserve Train", false);
+            new infiniteammo().Enable();
 			this._recoilControlSystem = new RecoilControlSystem();
 			this._skillzClass = new SkillzClass();
 			this._health = new Health();
@@ -74,24 +93,37 @@ namespace Tarky_Menu {
 			this._worldUtils.Awake();
 			this._weaponUtils.Awake();
 
-			ConsoleScreen.Commands.Add(new GClass2285("quit", _ => { Process.GetCurrentProcess().Kill(); }));
-			ConsoleScreen.Commands.Add(new GClass2285("q", _ => { Process.GetCurrentProcess().Kill(); }));
+			new infiniteammo().Enable();
+			
+			/* Old Console Commands. Dont use anymore :)
+			//ConsoleScreen.Commands.Add(new GClass2285("quit", _ => { Process.GetCurrentProcess().Kill(); }));
+			//ConsoleScreen.Commands.Add(new GClass2285("q", _ => { Process.GetCurrentProcess().Kill(); }));
+			*/
+			
+			ConsoleScreen.Processor.RegisterCommand("q", () => {Process.GetCurrentProcess().Kill(); });
+			ConsoleScreen.Processor.RegisterCommand("quit", () => {Process.GetCurrentProcess().Kill(); });
+
+
 		}
 
-		private void Update() {
-			if (!Singleton<GameWorld>.Instantiated) {
+		private void Update()
+		{
+			if (!Singleton<GameWorld>.Instantiated)
+			{
 				this.LocalPlayer = null;
 				return;
 			}
 
 			GameWorld gameWorld = Singleton<GameWorld>.Instance;
 
-			if (this.LocalPlayer == null && gameWorld.RegisteredPlayers.Count > 0) {
+			if (this.LocalPlayer == null && gameWorld.RegisteredPlayers.Count > 0)
+			{
 				this.LocalPlayer = gameWorld.RegisteredPlayers[0];
 				return;
 			}
-			
-			if (this.HideoutPlayer == null && gameWorld.RegisteredPlayers.Count > 0) {
+
+			if (this.HideoutPlayer == null && gameWorld.RegisteredPlayers.Count > 0)
+			{
 				this.HideoutPlayer = gameWorld.RegisteredPlayers[0];
 				return;
 			}
@@ -106,72 +138,171 @@ namespace Tarky_Menu {
 			this._worldUtils.MiscWorldUtilities();
 			this._weaponUtils.FireMod();
 
-			if (Instance.LocalPlayer != null && Instance.LocalPlayer.ActiveHealthController != null) {
-				if (Input.GetKeyDown(this.KillSelf.Value)) {
+			if (Instance.LocalPlayer != null && Instance.LocalPlayer.ActiveHealthController != null)
+			{
+				if (Input.GetKeyDown(this.KillSelf.Value))
+				{
 					this.LocalPlayer.ActiveHealthController.Kill(EDamageType.RadExposure);
 				}
 
-				if (this.KillAll.Value) {
+				if (this.KillAll.Value)
+				{
 					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => x != this.LocalPlayer);
-					foreach (Player player in players) {
+					foreach (Player player in players)
+					{
 						player.ActiveHealthController.Kill(EDamageType.RadExposure);
 					}
 				}
 
-				if (Input.GetKeyDown(this.TPAll.Value)) {
+				if (Input.GetKeyDown(this.TPAll.Value))
+				{
 					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
-					foreach (Player player in players) {
+					foreach (Player player in players)
+					{
 						player.Teleport(this.LocalPlayer.Transform.position);
 					}
 				}
 
-				if (Input.GetKeyDown(this.TPScav.Value)) {
+				if (Input.GetKeyDown(this.TPScav.Value))
+				{
 					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
-					foreach (Player player in players) {
-						if (player.Profile.Side == EPlayerSide.Savage) {
+					foreach (Player player in players)
+					{
+						if (player.Profile.Side == EPlayerSide.Savage)
+						{
 							player.Teleport(this.LocalPlayer.Transform.position);
 						}
 					}
 				}
 
-				if (Input.GetKeyDown(this.TPUsec.Value)) {
+				if (Input.GetKeyDown(this.TPUsec.Value))
+				{
 					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
-					foreach (Player player in players) {
-						if (player.Profile.Side == EPlayerSide.Usec) {
+					foreach (Player player in players)
+					{
+						if (player.Profile.Side == EPlayerSide.Usec)
+						{
 							player.Teleport(this.LocalPlayer.Transform.position);
 						}
 					}
 				}
 
-				if (Input.GetKeyDown(this.TPBear.Value)) {
+				if (Input.GetKeyDown(this.TPBear.Value))
+				{
 					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
-					foreach (Player player in players) {
-						if (player.Profile.Side == EPlayerSide.Bear) {
+					foreach (Player player in players)
+					{
+						if (player.Profile.Side == EPlayerSide.Bear)
+						{
 							player.Teleport(this.LocalPlayer.Transform.position);
 						}
 					}
 				}
 
-				if (Input.GetKeyDown(this.TPCrate.Value)) {
-					foreach (SynchronizableObject crate in LocationScene.GetAllObjects<SynchronizableObject>()) {
+				if (Input.GetKeyDown(this.TPCrate.Value))
+				{
+					foreach (SynchronizableObject crate in LocationScene.GetAllObjects<SynchronizableObject>())
+					{
 						crate.transform.position = this.LocalPlayer.Transform.position;
 					}
 				}
-
-				if (this.NoRagdollStop.Value) {
+				if (NoRagdollStop.Value)
+				{
 					EFTHardSettings.Instance.DEBUG_CORPSE_PHYSICS = this.NoRagdollStop.Value;
 				}
-
-				if (Input.GetKeyDown(this.MineRemover.Value)) {
+				if (Input.GetKeyDown(this.MineRemover.Value))
+				{
 					Minefield minefield = FindObjectOfType<Minefield>();
-					minefield.enabled = false;
+					//minefield.enabled = false;
+					minefield.gameObject.SetActive(false);
 				}
 
-				if (Input.GetKeyDown(this.SniperRemover.Value)) {
+				if (Input.GetKeyDown(this.SniperRemover.Value))
+				{
 					SniperFiringZone sniper = FindObjectOfType<SniperFiringZone>();
-					sniper.enabled = false;
+					//sniper.enabled = false;
+					sniper.gameObject.SetActive(false);
+				}
+
+
+				if (Input.GetKeyDown(this.RemoveAllExfils.Value))
+				{
+					ExfiltrationPoint exfiltration = FindObjectOfType<ExfiltrationPoint>();
+					exfiltration.gameObject.SetActive(false);
+				}
+
+				if (Instance.LocalPlayer != null && Input.GetKeyDown(this.TacSprintButton.Value))
+				{
+					TacSprint.Value = !TacSprint.Value;
+				}
+
+				if (Instance.LocalPlayer != null && TacSprint.Value)
+				{
+					this.LocalPlayer.BodyAnimatorCommon.SetFloat("WeapSizeModifier", 2);
+				}
+				else
+				{
+					if (Instance.LocalPlayer.HandsController is Player.FirearmController controller)
+					{
+						this.LocalPlayer.BodyAnimatorCommon.SetFloat("WeapSizeModifier", controller.Item.CalculateCellSize().X);
+					}
+				}
+
+
+				if (Instance.LocalPlayer != null && CloseWeapon.Value)
+				{
+					this.LocalPlayer.ProceduralWeaponAnimation._shouldMoveWeaponCloser = false;
+				}
+
+				if (Instance.LocalPlayer != null && InstaKill.Value)
+				{
+					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+					foreach (Player player in players)
+					{
+
+						if (player.ActiveHealthController.DamageMultiplier == 10000f)
+						{
+							return;
+						}
+						player.ActiveHealthController.AddDamageMultiplier(10000f);
+					}
+				}
+				else if (Instance.LocalPlayer != null && !InstaKill.Value)
+				{
+					IEnumerable<Player> players = gameWorld.RegisteredPlayers.Where(x => !x.IsYourPlayer);
+					foreach (Player player in players)
+					{
+						if (player.ActiveHealthController.DamageMultiplier == 1f)
+						{
+							return;
+						}
+
+						if (player.ActiveHealthController.DamageMultiplier == 10000f)
+						{
+							player.ActiveHealthController.AddDamageMultiplier(0.0001f);
+						}
+					}
 				}
 			}
+			/*
+            if (Instance.LocalPlayer != null && Input.GetKeyDown(ReserveTrainButton.Value))
+            {
+                var Trains = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<MovingPlatform>().Where(T => T is Locomotive);
+                ReserveTrain.Value = !ReserveTrain.Value;
+			}
+
+
+			if (Instance.LocalPlayer != null && ReserveTrain.Value)
+			{
+				//var Trains = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<MovingPlatform>().Where(T => T is Locomotive);
+				var Trains = FindObjectsOfType<Locomotive>();
+				foreach (var Train in Trains)
+				{
+					Train.Init(GClass1150.UtcNow);
+				}
+				ReserveTrain.Value = false;
+			}
+			*/
 		}
 	}
 }

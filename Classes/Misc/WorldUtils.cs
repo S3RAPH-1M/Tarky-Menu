@@ -20,6 +20,7 @@ namespace Tarky_Menu.Classes.Misc
     internal class WorldUtils
     {
         public ConfigEntry<KeyCode> DoorUnlock { get; private set; }
+        public ConfigEntry<KeyCode> PowerButton { get; private set; }
         public ConfigEntry<KeyCode> DoorKicker { get; private set; }
         public ConfigEntry<Boolean> AllKeys { get; private set; }
 
@@ -31,6 +32,7 @@ namespace Tarky_Menu.Classes.Misc
         public void Awake()
         {
             this.DoorUnlock = Instance.Config.Bind("World | Misc", "Unlock Doors", KeyCode.None);
+            this.PowerButton = Instance.Config.Bind("World | Misc", "Turn On Power", KeyCode.None);
             this.DoorKicker = Instance.Config.Bind("World | Misc", "Breach Any Door", KeyCode.None, "HERES JOHNNY!!!");
             this.AllKeys = Instance.Config.Bind("World | Misc", "All Keycards Work On Labs", false);
 
