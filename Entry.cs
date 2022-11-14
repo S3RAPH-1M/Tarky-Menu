@@ -7,7 +7,6 @@ using BepInEx.Configuration;
 using Comfort.Common;
 using EFT;
 using EFT.Interactive;
-using EFT.MovingPlatforms;
 using EFT.SynchronizableObjects;
 using EFT.UI;
 using Tarky_Menu.Classes;
@@ -47,6 +46,7 @@ namespace Tarky_Menu {
 		public ConfigEntry<KeyCode> TPBear { get; private set; }
 		public ConfigEntry<KeyCode> TPScav { get; private set; }
 		public ConfigEntry<bool> InfAmmo { get; private set; }
+		public ConfigEntry<bool> QuickThrowNade { get; private set; }
 		public ConfigEntry<KeyCode> TPCrate { get; private set; }
 		public ConfigEntry<Boolean> NoRagdollStop { get; private set; }
 		public ConfigEntry<KeyCode> MineRemover { get; private set; }
@@ -74,13 +74,14 @@ namespace Tarky_Menu {
 			this.TacSprintButton = this.Config.Bind("Weapons | Animations", "Tac Sprint", KeyCode.None);
 			this.TacSprint = this.Config.Bind("Weapons | Animations", "Tac Sprint Toggle", false);
 			this.InfAmmo = this.Config.Bind("Weapons | Misc", "Infinite Ammo", false);
+			this.QuickThrowNade = this.Config.Bind("Weapons | Misc", "Quick Throw Grenades", false);
 			this.RemoveAllExfils = this.Config.Bind("World | Misc", "Remove All Exfils", KeyCode.None);
 			this.CloseWeapon = this.Config.Bind("Weapon | Misc", "Never Have Weapons Closer", false);
 			this.InstaKill = this.Config.Bind("World | AI", "One Shot AI", false);
-			//this.ReserveTrainButton = this.Config.Bind("World | World", "Summon Reserve Train Button", KeyCode.None);
             this.ReserveTrain = this.Config.Bind("World | World", "Summon Reserve Train", false);
             new infiniteammo().Enable();
-			this._recoilControlSystem = new RecoilControlSystem();
+            new QuickGrenadeThrow().Enable();
+            this._recoilControlSystem = new RecoilControlSystem();
 			this._skillzClass = new SkillzClass();
 			this._health = new Health();
 			this._cameraUtils = new CameraUtils();
@@ -93,13 +94,13 @@ namespace Tarky_Menu {
 			this._worldUtils.Awake();
 			this._weaponUtils.Awake();
 
-			new infiniteammo().Enable();
 			
 			/* Old Console Commands. Dont use anymore :)
 			//ConsoleScreen.Commands.Add(new GClass2285("quit", _ => { Process.GetCurrentProcess().Kill(); }));
 			//ConsoleScreen.Commands.Add(new GClass2285("q", _ => { Process.GetCurrentProcess().Kill(); }));
 			*/
 			
+
 			ConsoleScreen.Processor.RegisterCommand("q", () => {Process.GetCurrentProcess().Kill(); });
 			ConsoleScreen.Processor.RegisterCommand("quit", () => {Process.GetCurrentProcess().Kill(); });
 
@@ -284,25 +285,6 @@ namespace Tarky_Menu {
 					}
 				}
 			}
-			/*
-            if (Instance.LocalPlayer != null && Input.GetKeyDown(ReserveTrainButton.Value))
-            {
-                var Trains = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<MovingPlatform>().Where(T => T is Locomotive);
-                ReserveTrain.Value = !ReserveTrain.Value;
-			}
-
-
-			if (Instance.LocalPlayer != null && ReserveTrain.Value)
-			{
-				//var Trains = LocationScene.GetAllObjectsAndWhenISayAllIActuallyMeanIt<MovingPlatform>().Where(T => T is Locomotive);
-				var Trains = FindObjectsOfType<Locomotive>();
-				foreach (var Train in Trains)
-				{
-					Train.Init(GClass1150.UtcNow);
-				}
-				ReserveTrain.Value = false;
-			}
-			*/
 		}
 	}
 }

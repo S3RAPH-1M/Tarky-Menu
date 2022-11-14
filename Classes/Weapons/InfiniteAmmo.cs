@@ -12,14 +12,13 @@ using static Tarky_Menu.Entry;
 namespace Tarky_Menu.Classes.Weapons {
 	public class infiniteammo : ModulePatch {
 
-		public ConfigEntry<Boolean> InfAmmo { get; private set; }
 
 		protected override MethodBase GetTargetMethod() {
 			return typeof(BallisticsCalculator).GetMethod("Shoot");
 		}
 
 		[PatchPostfix]
-		private static void Postfix(GClass2382 shot) {
+		private static void Postfix(GClass2388 shot) {
 			Weapon weapon = null;
 			bool flag;
 			if (Entry.Instance.InfAmmo.Value && shot.Player.IsYourPlayer) {

@@ -143,6 +143,7 @@
     <Compile Include="Classes\PlayerStats\Health.cs" />
     <Compile Include="Classes\PlayerStats\SkillzClass.cs" />
     <Compile Include="Classes\Weapons\InfiniteAmmo.cs" />
+    <Compile Include="Classes\Weapons\QuickGrenadeThrow.cs" />
     <Compile Include="Classes\Weapons\RecoilControlSystem.cs" />
     <Compile Include="Classes\Weapons\WeaponUtils.cs" />
     <Compile Include="Entry.cs" />

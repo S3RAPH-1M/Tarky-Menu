@@ -65,3 +65,5 @@ obj/Debug/Tarky-Menu.csproj.CoreCompileInputs.cache
 obj/Debug/Tarky-Menu.csproj.AssemblyReference.cache
 obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 *.pdb
+*.dll
+*.pdb
