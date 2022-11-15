@@ -18,7 +18,7 @@ namespace Tarky_Menu.Classes.Weapons {
 		}
 
 		[PatchPostfix]
-		private static void Postfix(GClass2388 shot) {
+		private static void Postfix(GClass2395 shot) {
 			Weapon weapon = null;
 			bool flag;
 			if (Entry.Instance.InfAmmo.Value && shot.Player.IsYourPlayer) {

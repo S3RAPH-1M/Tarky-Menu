@@ -6,7 +6,7 @@ using UnityEngine;
 using EFT;
 using EFT.InventoryLogic;
 using Comfort.Common;
-using cameraClass = GClass1780;
+using cameraClass = GClass1785;
 using System.Collections.Generic;
 using System.Linq;
 using EFT.Ballistics;

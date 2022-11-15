@@ -13,11 +13,11 @@ namespace Tarky_Menu.Classes.Weapons
         protected override MethodBase GetTargetMethod()
         {
             return typeof(Player).GetMethod(nameof(Player.SetInHands),
-                new[] { typeof(GClass2192), typeof(Callback<GInterface104>) });
+                new[] { typeof(GClass2199), typeof(Callback<GInterface104>) });
         }
 
         [PatchPrefix]
-        private static Boolean Prefix(Player __instance, GClass2192 throwWeap, Callback<GInterface110> callback)
+        private static Boolean Prefix(Player __instance, GClass2199 throwWeap, Callback<GInterface110> callback)
         {
             if (Entry.Instance.LocalPlayer != null && Entry.Instance.QuickThrowNade.Value)
             {
