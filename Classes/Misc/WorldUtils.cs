@@ -19,21 +19,21 @@ namespace Tarky_Menu.Classes.Misc
 {
     internal class WorldUtils
     {
-        public ConfigEntry<KeyCode> DoorUnlock { get; private set; }
-        public ConfigEntry<KeyCode> PowerButton { get; private set; }
-        public ConfigEntry<KeyCode> DoorKicker { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> DoorUnlock { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> PowerButton { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> DoorKicker { get; private set; }
         public ConfigEntry<Boolean> AllKeys { get; private set; }
 
-        
+
         private static FieldInfo _additionalKeys;
         private static string[] _additionalKeysArray = { "5c1d0d6d86f7744bb2683e1f", "5c1d0efb86f7744baf2e7b7b", "5c1d0c5f86f7744bb2683cf0", "5c1e495a86f7743109743dfb", "5c1d0dc586f7744baf2e7b79", "5c1d0f4986f7744bb01837fa", "5c94bbff86f7747ee735c08f" };
 
 
         public void Awake()
         {
-            this.DoorUnlock = Instance.Config.Bind("World | Misc", "Unlock Doors", KeyCode.None);
-            this.PowerButton = Instance.Config.Bind("World | Misc", "Turn On Power", KeyCode.None);
-            this.DoorKicker = Instance.Config.Bind("World | Misc", "Breach Any Door", KeyCode.None, "HERES JOHNNY!!!");
+            this.DoorUnlock = Instance.Config.Bind("World | Misc", "Unlock Doors", new BepInEx.Configuration.KeyboardShortcut());
+            this.PowerButton = Instance.Config.Bind("World | Misc", "Turn On Power", new BepInEx.Configuration.KeyboardShortcut());
+            this.DoorKicker = Instance.Config.Bind("World | Misc", "Breach Any Door", new BepInEx.Configuration.KeyboardShortcut(), "HERES JOHNNY!!!");
             this.AllKeys = Instance.Config.Bind("World | Misc", "All Keycards Work On Labs", false);
 
         }
@@ -41,7 +41,7 @@ namespace Tarky_Menu.Classes.Misc
         public void DoorUnlocker()
         {
 
-            if (Input.GetKeyDown(this.DoorUnlock.Value))
+            if (DoorUnlock.Value.IsDown())
             {
                 var worldInteractiveObjects = LocationScene.GetAll<WorldInteractiveObject>();
 
@@ -73,7 +73,7 @@ namespace Tarky_Menu.Classes.Misc
                 }
             }
 
-            if (Input.GetKeyDown(this.DoorKicker.Value))
+            if (DoorKicker.Value.IsDown())
             {
                 var worldInteractiveObjects = LocationScene.GetAll<WorldInteractiveObject>();
 
@@ -86,7 +86,7 @@ namespace Tarky_Menu.Classes.Misc
                 }
             }
         }
-        
+
         public void MiscWorldUtilities()
         {
             if (AllKeys.Value)
@@ -106,11 +106,10 @@ namespace Tarky_Menu.Classes.Misc
                     }
                 }
             }
-            
-            
+
+
         }
 
     }
 }
-
 

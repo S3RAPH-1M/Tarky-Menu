@@ -6,7 +6,7 @@ using UnityEngine;
 using EFT;
 using EFT.InventoryLogic;
 using Comfort.Common;
-using cameraClass = GClass1785;
+using cameraClass = CameraClass;
 using System.Collections.Generic;
 using System.Linq;
 using EFT.Ballistics;
@@ -19,14 +19,13 @@ namespace Tarky_Menu.Classes.Misc
     {
         public ConfigEntry<Boolean> FOVEnabled { get; private set; }
         public ConfigEntry<Single> FOV { get; private set; }
-        public ConfigEntry<KeyCode> ThermalButton { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> ThermalButton { get; private set; }
         public ConfigEntry<Boolean> ThermalToggle { get; private set; }
         public ConfigEntry<Boolean> HideOverlay { get; private set; }
         public ConfigEntry<Boolean> NoEffects { get; private set; }
-        public ConfigEntry<KeyCode> FOVButton { get; private set; }
-        public ConfigEntry<KeyCode> NVGButton { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> FOVButton { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> NVGButton { get; private set; }
         public ConfigEntry<Boolean> NVGButtonToggle { get; private set; }
-        public ConfigEntry<Boolean> NVGCheckbox { get; private set; }
 
 
 
@@ -38,20 +37,18 @@ namespace Tarky_Menu.Classes.Misc
             this.NoEffects = Instance.Config.Bind("Player | Camera", "No More ScreenShake & Blood", false);
             this.FOVEnabled = Instance.Config.Bind("Player | Camera", "FOV Enabled", false, "Description");
             this.FOV = Instance.Config.Bind("Player | Camera", "FOV Amount", 65f, "Your FOV Amount");
-            this.FOVButton = Instance.Config.Bind("Player | Camera", "FOV Button", KeyCode.None);
-            this.NVGButton = Instance.Config.Bind("Player | Camera", "NVG Button", KeyCode.None);
-            this.ThermalButton = Instance.Config.Bind("Player | Camera", "Thermal Button", KeyCode.None);
+            this.FOVButton = Instance.Config.Bind("Player | Camera", "FOV Button", new BepInEx.Configuration.KeyboardShortcut());
+            this.NVGButton = Instance.Config.Bind("Player | Camera", "Clearer NVGs Button", new BepInEx.Configuration.KeyboardShortcut());
+            this.NVGButtonToggle = Instance.Config.Bind("Player | Camera", "Clearer NVGs Toggle", false, "Toggle Thermals");
+            this.ThermalButton = Instance.Config.Bind("Player | Camera", "Thermal Button", new BepInEx.Configuration.KeyboardShortcut());
             this.ThermalToggle = Instance.Config.Bind("Player | Camera", "Thermal Toggle", false, "Toggle Thermals");
-            this.NVGCheckbox = Instance.Config.Bind("Player | Camera", "NVG Toggle", false, "Toggle NVG");
         }
 
-        public void CameraStuff()
+        public void FoVController()
         {
             if (cameraClass.Instance != null)
             {
-
-
-                if (Input.GetKeyDown(FOVButton.Value))
+                if (FOVButton.Value.IsDown())
                 {
                     FOVEnabled.Value = !FOVEnabled.Value;
                 }
@@ -60,8 +57,14 @@ namespace Tarky_Menu.Classes.Misc
                 {
                     cameraClass.Instance.SetFov(FOV.Value, 0f);
                 }
+            }
+        }
 
-                if (HideOverlay.Value && cameraClass.Instance.VisorEffect != null)
+        public void ScreenFXController()
+        {
+            if (cameraClass.Instance != null)
+            {
+                if (HideOverlay.Value && cameraClass.Instance.VisorEffect != null && cameraClass.Instance.VisorEffect.enabled )
                 {
                     cameraClass.Instance.VisorEffect.enabled = !HideOverlay.Value;
                 }
@@ -72,16 +75,22 @@ namespace Tarky_Menu.Classes.Misc
                     cameraClass.Instance.Camera.GetComponent<CC_Blend>().enabled = !NoEffects.Value;
                     cameraClass.Instance.Camera.GetComponent<CC_Wiggle>().enabled = !NoEffects.Value;
                 }
+            }
+        }
 
-                if (Input.GetKeyDown(ThermalButton.Value))
+        public void ThermalController()
+        {
+            if (cameraClass.Instance != null)
+            {
+                if (ThermalButton.Value.IsDown())
                 {
-                    ThermalToggle.Value = !ThermalToggle.Value; 
+                    ThermalToggle.Value = !ThermalToggle.Value;
                 }
+
 
                 if (cameraClass.Instance.ThermalVision != null)
                 {
                     cameraClass.Instance.ThermalVision.On = ThermalToggle.Value;
-
                     cameraClass.Instance.ThermalVision.IsNoisy = false;
                     cameraClass.Instance.ThermalVision.IsGlitch = false;
                     cameraClass.Instance.ThermalVision.IsMotionBlurred = false;
@@ -91,17 +100,33 @@ namespace Tarky_Menu.Classes.Misc
             }
         }
 
-        public void NightVisionHax()
+        public void NVGController()
         {
-
-            if (Input.GetKeyDown(NVGButton.Value))
+            if (cameraClass.Instance != null)
             {
-                var nvgcomponent = cameraClass.Instance.Camera.GetComponent<BSG.CameraEffects.NightVision>();
+                if (cameraClass.Instance.NightVision != null && NVGButton.Value.IsDown())
+                {
+                    NVGButtonToggle.Value = !NVGButtonToggle.Value;
+                }
 
-                nvgcomponent.StartSwitch(NVGCheckbox.Value = !NVGCheckbox.Value);
-                nvgcomponent.TextureMask.Color = new Color(0f, 0f, 0f, 0f);
+                if (NVGButtonToggle.Value)
+                {
+                    if (cameraClass.Instance.NightVision != null && cameraClass.Instance.NightVision.On)
+                    {
+                        if (CameraClass.Instance.NightVision.NoiseIntensity > 0f)
+                        {
+                            CameraClass.Instance.NightVision.NoiseIntensity = 0f;
+                        }
+                        if (CameraClass.Instance.NightVision.MaskSize != 2000f)
+                        {
+                            CameraClass.Instance.NightVision.MaskSize = 2000f;
+                            CameraClass.Instance.NightVision.ApplySettings();
+                        }
+                    }
+                }
             }
-
         }
+
     }
+
 }

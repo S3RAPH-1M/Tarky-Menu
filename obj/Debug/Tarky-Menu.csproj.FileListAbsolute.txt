@@ -118,14 +118,10 @@ D:\VS-Projects\Tarky-Menu\Tarky-Menu\bin\Debug\aki-custom.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Tarky-Menu.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Tarky-Menu.pdb
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\0Harmony.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\aki-bundles.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\aki-core.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\aki-custom.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\aki-debugging.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\aki-singleplayer.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Aki.Build.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Aki.Common.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Aki.Reflection.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Assembly-CSharp.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\BepInEx.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\bsg.console.core.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Comfort.dll
@@ -134,7 +130,6 @@ D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\ConfigurationManager.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\ItemComponent.Types.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Newtonsoft.Json.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\NLog.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\SERVPH_API.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.AssetBundleModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.CoreModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.dll
@@ -143,6 +138,7 @@ D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.InputLegacyModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.PhysicsModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.TextCoreModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.TextRenderingModule.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.UIModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Mono.Cecil.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\MonoMod.Utils.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\MonoMod.RuntimeDetour.dll
@@ -159,7 +155,6 @@ D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.ParticleSystemModule.d
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.ClothModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.Postprocessing.Runtime.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Assembly-CSharp-firstpass.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.UIModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Sirenix.OdinInspector.Attributes.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\UnityEngine.Physics2DModule.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\CommonExtensions.dll
@@ -221,7 +216,6 @@ D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.ProBuilder.Poly2Tri.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.ProBuilder.KdTree.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Sirenix.Serialization.Config.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.Timeline.dll
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\SERVPH_API.pdb
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\0Harmony.xml
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\BepInEx.xml
 D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\MonoMod.Utils.xml
@@ -231,4 +225,9 @@ D:\VS-Projects\TarkyMods\Tarky-Menu\obj\Debug\Tarky-Menu.csproj.CoreCompileInput
 D:\VS-Projects\TarkyMods\Tarky-Menu\obj\Debug\Tarky-Menu.csproj.CopyComplete
 D:\VS-Projects\TarkyMods\Tarky-Menu\obj\Debug\Tarky-Menu.dll
 D:\VS-Projects\TarkyMods\Tarky-Menu\obj\Debug\Tarky-Menu.pdb
-D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Assembly-CSharp.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\websocket-sharp.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Oculus.Spatializer.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\uLipSync.Runtime.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.Burst.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.Mathematics.dll
+D:\VS-Projects\TarkyMods\Tarky-Menu\bin\Debug\Unity.Burst.Unsafe.dll

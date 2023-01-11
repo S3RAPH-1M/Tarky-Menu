@@ -91,6 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="nexus-bundleloader">
+      <HintPath>E:\Games\SPT\BepInEx\plugins\nexus-bundleloader.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\NLog.dll</HintPath>
@@ -135,25 +138,23 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Games\SPT\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Misc\CameraUtils.cs" />
     <Compile Include="Classes\Misc\WorldUtils.cs" />
-    <Compile Include="Classes\Patches\LocationSecnePatch.cs" />
     <Compile Include="Classes\PlayerStats\Health.cs" />
     <Compile Include="Classes\PlayerStats\SkillzClass.cs" />
+    <Compile Include="Classes\Utils.cs" />
     <Compile Include="Classes\Weapons\InfiniteAmmo.cs" />
     <Compile Include="Classes\Weapons\QuickGrenadeThrow.cs" />
     <Compile Include="Classes\Weapons\RecoilControlSystem.cs" />
     <Compile Include="Classes\Weapons\WeaponUtils.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SERVPH-API\SERVPH-API.csproj">
-      <Project>{65c23d64-9d5a-413a-a0f1-fc9013cb38dc}</Project>
-      <Name>SERVPH-API</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

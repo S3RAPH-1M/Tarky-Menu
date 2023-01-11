@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Aki.Reflection.Patching;
 using BepInEx.Configuration;
@@ -12,12 +13,12 @@ namespace Tarky_Menu.Classes.Weapons
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(Player).GetMethod(nameof(Player.SetInHands),
-                new[] { typeof(GClass2199), typeof(Callback<GInterface104>) });
+            return typeof(Player).GetMethods().First(m =>
+                m.Name == "SetInHands" && m.GetParameters()[0].Name == "throwWeap");
         }
 
         [PatchPrefix]
-        private static Boolean Prefix(Player __instance, GClass2199 throwWeap, Callback<GInterface110> callback)
+        private static Boolean Prefix(Player __instance, GrenadeClass throwWeap, Callback<GInterface110> callback)
         {
             if (Entry.Instance.LocalPlayer != null && Entry.Instance.QuickThrowNade.Value)
             {

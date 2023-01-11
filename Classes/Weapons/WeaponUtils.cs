@@ -22,15 +22,11 @@ namespace Tarky_Menu.Classes.Weapons {
 		{
 			if (AllFireModes.Value && Instance.LocalPlayer != null || AllFireModes.Value && Instance.HideoutPlayer)
 			{
-				if (Instance.LocalPlayer.HandsController is Player.FirearmController controller)
+				if (Instance.LocalPlayer.HandsController is Player.FirearmController controller && controller.Item.Template.weapFireType != AllModes)
 				{
 					controller.Item.Template.weapFireType = AllModes;
 				}
 			}
 		}
-		
-		
-		
-		
 	}
 }

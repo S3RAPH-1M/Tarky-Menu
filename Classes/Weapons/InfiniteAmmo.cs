@@ -4,9 +4,7 @@ using Aki.Reflection.Patching;
 using EFT.Ballistics;
 using EFT.InventoryLogic;
 using BepInEx.Configuration;
-using SERVPHAPI;
 using EFT;
-using SERVPH_API;
 using static Tarky_Menu.Entry;
 
 namespace Tarky_Menu.Classes.Weapons {
@@ -18,7 +16,7 @@ namespace Tarky_Menu.Classes.Weapons {
 		}
 
 		[PatchPostfix]
-		private static void Postfix(GClass2395 shot) {
+		private static void Postfix(GClass2609 shot) {
 			Weapon weapon = null;
 			bool flag;
 			if (Entry.Instance.InfAmmo.Value && shot.Player.IsYourPlayer) {

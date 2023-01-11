@@ -13,19 +13,24 @@ using System.Reflection;
 using Tarky_Menu.Classes;
 using Tarky_Menu.Classes.PlayerStats;
 using static Tarky_Menu.Entry;
+using System.Net;
+using CommonAssets.Scripts.Game;
 
 namespace Tarky_Menu.Classes.PlayerStats
 {
     internal class Health
     {
-        private static String[] TargetBones = {"head", "spine3", "spine2", "spine1"};
-        
+        private static String[] TargetBones = { "head", "spine3", "spine2", "spine1" };
         public ConfigEntry<Boolean> Godmode { get; private set; }
         public ConfigEntry<Boolean> Demigod { get; private set; }
-        public ConfigEntry<KeyCode> Heal { get; private set; }
+        public Boolean Heal { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> HealButton { get; private set; }
         public ConfigEntry<Boolean> NoFall { get; private set; }
         public ConfigEntry<Boolean> HungerEnergyDrain { get; private set; }
         public ConfigEntry<Boolean> InfiniteHealthBoost { get; private set; }
+        public Boolean HasDoneGodMode { get; private set; }
+        public Boolean HasDoneNoFall { get; private set; }
+        public float originalFallValue { get; private set; }
 
 
 
@@ -33,10 +38,9 @@ namespace Tarky_Menu.Classes.PlayerStats
         {
             this.Godmode = Instance.Config.Bind("Player | Health", "Godmode", false, "Invincible");
             this.Demigod = Instance.Config.Bind("Player | Health", "Demi-God", false, "Only ur head and thorax are invincible");
-            this.Heal = Instance.Config.Bind("Player | Health", "Heal", KeyCode.None);
+            this.HealButton = Instance.Config.Bind("Player | Health", "Heal", new BepInEx.Configuration.KeyboardShortcut());
             this.NoFall = Instance.Config.Bind("Player | Health", "No Fall Damage", false);
             this.HungerEnergyDrain = Instance.Config.Bind("Player | Health", "No Energy/Hunger Drain", false);
-            this.InfiniteHealthBoost = Instance.Config.Bind("Player | Health", "Permanent Heal Boost", false);
         }
 
         public void godMod()
@@ -45,69 +49,98 @@ namespace Tarky_Menu.Classes.PlayerStats
             {
                 if (Godmode.Value)
                 {
-                    Instance.LocalPlayer.ActiveHealthController.SetDamageCoeff(-1f);
-                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Common);
-                    Instance.LocalPlayer.ActiveHealthController.RestoreFullHealth();
+                    if (Instance.LocalPlayer.ActiveHealthController.DamageCoeff != -1f)
+                    {
+                        Instance.LocalPlayer.ActiveHealthController.SetDamageCoeff(-1f);
+                        Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Common);
+                        Instance.LocalPlayer.ActiveHealthController.RestoreFullHealth();
+                    }
+                    if (Instance.LocalPlayer.ActiveHealthController.FallSafeHeight != 9999999f)
+                    {
+                        Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = 9999999f;
+                    }
                 }
-                else
+                if (!Godmode.Value)
                 {
-                    Instance.LocalPlayer.ActiveHealthController.SetDamageCoeff(1f);
+                    if (Instance.LocalPlayer.ActiveHealthController.DamageCoeff != 1f)
+                    {
+                        Instance.LocalPlayer.ActiveHealthController.SetDamageCoeff(1f);
+                        Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = 1f;
+                    }
                 }
 
                 if (Demigod.Value)
                 {
-                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Head);
-                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);
-                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, 2147483640, new DamageInfo());
-                    Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, 2147483640, new DamageInfo());
-                    foreach (Transform child in EnumerateHierarchyCore(Instance.LocalPlayer.gameObject.transform).Where(t => TargetBones.Any(u => t.name.ToLower().Contains(u))))
+                    var HeadHP = Instance.LocalPlayer.ActiveHealthController.GetBodyPartHealth(EBodyPart.Head, true);
+                    var ChestHP = Instance.LocalPlayer.ActiveHealthController.GetBodyPartHealth(EBodyPart.Chest, true);
+
+                    // if ChestHP.Current is less than 45
+                    
+                    if (ChestHP.Current < 45)
                     {
-                        child.gameObject.layer = LayerMask.NameToLayer("PlayerSpiritAura");
+                        Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);
+                        Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, ChestHP.Maximum, default);
+                    }
+                    if (HeadHP.Current < 18)
+                    {
+                        Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Head);
+                        Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, HeadHP.Maximum, default);
+                    }
+
+                    if (Instance.HasDemiGodRan == false)
+                    {
+                        foreach (Transform transform in Health.EnumerateHierarchyCore(Entry.Instance.LocalPlayer.gameObject.transform).Where(t => TargetBones.Any(u => t.name.ToLower().Contains(u))))
+                        {
+                            if (transform.gameObject.layer != LayerMask.NameToLayer("PlayerSpiritAura"))
+                            {
+                                transform.gameObject.layer = LayerMask.NameToLayer("PlayerSpiritAura");
+                                Instance.HasDemiGodRan = true;
+                            }
+                        }
                     }
                 }
 
-                if (NoFall.Value)
+                if (NoFall.Value && HasDoneNoFall == false)
                 {
+                    originalFallValue = Instance.LocalPlayer.ActiveHealthController.FallSafeHeight;
                     Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = 9999999f;
+                    HasDoneNoFall = true;
                 }
-                else
+                if (!NoFall.Value && HasDoneNoFall == true)
                 {
-                    Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = 3;
-                }
-
-                if (Input.GetKeyDown(Heal.Value))
-                {
-                    Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Common);
-                    Instance.LocalPlayer.ActiveHealthController.RestoreFullHealth();
+                    Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = originalFallValue;
+                    HasDoneNoFall = false;
                 }
 
-                if (HungerEnergyDrain.Value)
+                if (HealButton.Value.IsDown())
                 {
-                    Instance.LocalPlayer.ActiveHealthController.ChangeEnergy(1000f);
-                    Instance.LocalPlayer.ActiveHealthController.ChangeHydration(1000f);
-                }
-
-                if (InfiniteHealthBoost.Value)
-                {
-
-                    Instance.LocalPlayer.ActiveHealthController.DoPermanentHealthBoost(500000f);
-
+                    Heal = true;
+                    if (Heal == true)
+                    {
+                        Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Common);
+                        Instance.LocalPlayer.ActiveHealthController.RestoreFullHealth();
+                        Heal = false;
+                    }
                 }
             }
         }
 
-        private static IEnumerable<Transform> EnumerateHierarchyCore(Transform root) {
+        private static IEnumerable<Transform> EnumerateHierarchyCore(Transform root)
+        {
             Queue<Transform> transformQueue = new Queue<Transform>();
             transformQueue.Enqueue(root);
 
-            while (transformQueue.Count > 0) {
+            while (transformQueue.Count > 0)
+            {
                 Transform parentTransform = transformQueue.Dequeue();
 
-                if (!parentTransform) {
+                if (!parentTransform)
+                {
                     continue;
                 }
 
-                for (Int32 i = 0; i < parentTransform.childCount; i++) {
+                for (Int32 i = 0; i < parentTransform.childCount; i++)
+                {
                     transformQueue.Enqueue(parentTransform.GetChild(i));
                 }
 
