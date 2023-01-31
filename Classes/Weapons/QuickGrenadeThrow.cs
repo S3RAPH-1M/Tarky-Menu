@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Aki.Reflection.Patching;
-using BepInEx.Configuration;
+﻿using Aki.Reflection.Patching;
 using Comfort.Common;
 using EFT;
-using static Tarky_Menu.Entry;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Tarky_Menu.Classes.Weapons
 {

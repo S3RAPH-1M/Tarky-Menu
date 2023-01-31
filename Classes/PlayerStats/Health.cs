@@ -1,20 +1,9 @@
-﻿using System;
-using BepInEx;
-using HarmonyLib;
-using BepInEx.Configuration;
-using UnityEngine;
-using EFT;
-using EFT.InventoryLogic;
-using Comfort.Common;
+﻿using BepInEx.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using EFT.Ballistics;
-using System.Reflection;
-using Tarky_Menu.Classes;
-using Tarky_Menu.Classes.PlayerStats;
+using UnityEngine;
 using static Tarky_Menu.Entry;
-using System.Net;
-using CommonAssets.Scripts.Game;
 
 namespace Tarky_Menu.Classes.PlayerStats
 {
@@ -75,7 +64,7 @@ namespace Tarky_Menu.Classes.PlayerStats
                     var ChestHP = Instance.LocalPlayer.ActiveHealthController.GetBodyPartHealth(EBodyPart.Chest, true);
 
                     // if ChestHP.Current is less than 45
-                    
+
                     if (ChestHP.Current < 45)
                     {
                         Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);

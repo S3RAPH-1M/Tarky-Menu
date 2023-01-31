@@ -1,19 +1,8 @@
-﻿using System;
-using BepInEx;
-using HarmonyLib;
-using BepInEx.Configuration;
-using UnityEngine;
-using EFT;
-using EFT.InventoryLogic;
-using Comfort.Common;
-using System.Collections.Generic;
-using System.Linq;
-using EFT.Ballistics;
-using System.Reflection;
-using Tarky_Menu.Classes;
-using Tarky_Menu.Classes.PlayerStats;
-using static Tarky_Menu.Entry;
+﻿using BepInEx.Configuration;
 using EFT.Interactive;
+using System;
+using System.Reflection;
+using static Tarky_Menu.Entry;
 
 namespace Tarky_Menu.Classes.Misc
 {
@@ -23,6 +12,7 @@ namespace Tarky_Menu.Classes.Misc
         public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> PowerButton { get; private set; }
         public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> DoorKicker { get; private set; }
         public ConfigEntry<Boolean> AllKeys { get; private set; }
+        public ConfigEntry<Boolean> Noclip { get; private set; }
 
 
         private static FieldInfo _additionalKeys;
@@ -106,10 +96,7 @@ namespace Tarky_Menu.Classes.Misc
                     }
                 }
             }
-
-
         }
-
     }
 }
 

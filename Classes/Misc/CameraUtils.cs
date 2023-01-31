@@ -1,17 +1,7 @@
-﻿using System;
-using BepInEx;
-using HarmonyLib;
-using BepInEx.Configuration;
-using UnityEngine;
-using EFT;
-using EFT.InventoryLogic;
-using Comfort.Common;
-using cameraClass = CameraClass;
-using System.Collections.Generic;
-using System.Linq;
-using EFT.Ballistics;
-using System.Reflection;
+﻿using BepInEx.Configuration;
+using System;
 using static Tarky_Menu.Entry;
+
 
 namespace Tarky_Menu.Classes.Misc
 {
@@ -46,41 +36,43 @@ namespace Tarky_Menu.Classes.Misc
 
         public void FoVController()
         {
-            if (cameraClass.Instance != null)
+            if (CameraClass.Instance != null)
             {
                 if (FOVButton.Value.IsDown())
                 {
                     FOVEnabled.Value = !FOVEnabled.Value;
                 }
-
                 if (FOVEnabled.Value)
                 {
-                    cameraClass.Instance.SetFov(FOV.Value, 0f);
+                    if (Instance.LocalPlayer != null && CameraClass.Instance != null && CameraClass.Instance.Camera.fieldOfView != FOV.Value)
+                    {
+                        CameraClass.Instance.SetFov(FOV.Value, 0f, true);
+                    }
                 }
             }
         }
 
         public void ScreenFXController()
         {
-            if (cameraClass.Instance != null)
+            if (CameraClass.Instance != null)
             {
-                if (HideOverlay.Value && cameraClass.Instance.VisorEffect != null && cameraClass.Instance.VisorEffect.enabled )
+                if (HideOverlay.Value && CameraClass.Instance.VisorEffect != null && CameraClass.Instance.VisorEffect.enabled)
                 {
-                    cameraClass.Instance.VisorEffect.enabled = !HideOverlay.Value;
+                    CameraClass.Instance.VisorEffect.enabled = !HideOverlay.Value;
                 }
 
-                if (NoEffects.Value && cameraClass.Instance.EffectsController != null)
+                if (NoEffects.Value && CameraClass.Instance.EffectsController != null)
                 {
-                    cameraClass.Instance.EffectsController.enabled = !NoEffects.Value;
-                    cameraClass.Instance.Camera.GetComponent<CC_Blend>().enabled = !NoEffects.Value;
-                    cameraClass.Instance.Camera.GetComponent<CC_Wiggle>().enabled = !NoEffects.Value;
+                    CameraClass.Instance.EffectsController.enabled = !NoEffects.Value;
+                    CameraClass.Instance.Camera.GetComponent<CC_Blend>().enabled = !NoEffects.Value;
+                    CameraClass.Instance.Camera.GetComponent<CC_Wiggle>().enabled = !NoEffects.Value;
                 }
             }
         }
 
         public void ThermalController()
         {
-            if (cameraClass.Instance != null)
+            if (CameraClass.Instance != null)
             {
                 if (ThermalButton.Value.IsDown())
                 {
@@ -88,30 +80,30 @@ namespace Tarky_Menu.Classes.Misc
                 }
 
 
-                if (cameraClass.Instance.ThermalVision != null)
+                if (CameraClass.Instance.ThermalVision != null)
                 {
-                    cameraClass.Instance.ThermalVision.On = ThermalToggle.Value;
-                    cameraClass.Instance.ThermalVision.IsNoisy = false;
-                    cameraClass.Instance.ThermalVision.IsGlitch = false;
-                    cameraClass.Instance.ThermalVision.IsMotionBlurred = false;
-                    cameraClass.Instance.ThermalVision.IsPixelated = false;
-                    cameraClass.Instance.ThermalVision.ThermalVisionUtilities.NoiseParameters.NoiseIntensity = 0;
+                    CameraClass.Instance.ThermalVision.On = ThermalToggle.Value;
+                    CameraClass.Instance.ThermalVision.IsNoisy = false;
+                    CameraClass.Instance.ThermalVision.IsGlitch = false;
+                    CameraClass.Instance.ThermalVision.IsMotionBlurred = false;
+                    CameraClass.Instance.ThermalVision.IsPixelated = false;
+                    CameraClass.Instance.ThermalVision.ThermalVisionUtilities.NoiseParameters.NoiseIntensity = 0;
                 }
             }
         }
 
         public void NVGController()
         {
-            if (cameraClass.Instance != null)
+            if (CameraClass.Instance != null)
             {
-                if (cameraClass.Instance.NightVision != null && NVGButton.Value.IsDown())
+                if (CameraClass.Instance.NightVision != null && NVGButton.Value.IsDown())
                 {
                     NVGButtonToggle.Value = !NVGButtonToggle.Value;
                 }
 
                 if (NVGButtonToggle.Value)
                 {
-                    if (cameraClass.Instance.NightVision != null && cameraClass.Instance.NightVision.On)
+                    if (CameraClass.Instance.NightVision != null && CameraClass.Instance.NightVision.On)
                     {
                         if (CameraClass.Instance.NightVision.NoiseIntensity > 0f)
                         {

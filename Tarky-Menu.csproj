@@ -161,9 +161,7 @@
     <PostBuildEvent>copy "$(TargetPath)" "E:\Games\SPT\BepInEx\plugins\Tarky-Menu.dll"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>FOR /F %25%25x IN ('tasklist /NH /FI "IMAGENAME eq EscapeFromTarkov.exe"') DO IF %25%25x == EscapeFromTarkov.exe (
-taskkill /F /IM EscapeFromTarkov.exe
-ping -n  2 127.0.0.1 &gt;NUL
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,15 +1,6 @@
-﻿using System;
-using BepInEx;
-using HarmonyLib;
-using BepInEx.Configuration;
-using UnityEngine;
+﻿using BepInEx.Configuration;
 using EFT;
-using EFT.InventoryLogic;
-using Comfort.Common;
-using System.Collections.Generic;
-using System.Linq;
-using EFT.Ballistics;
-using System.Reflection;
+using System;
 using static Tarky_Menu.Entry;
 
 namespace Tarky_Menu.Classes.PlayerStats
@@ -67,7 +58,7 @@ namespace Tarky_Menu.Classes.PlayerStats
                 Instance.LocalPlayer.RemoveStateSpeedLimit(Player.ESpeedLimit.Armor);
                 Instance.LocalPlayer.RemoveStateSpeedLimit(Player.ESpeedLimit.Aiming);
             }
-            
+
             if (InstaSearch.Value && Instance.LocalPlayer != null && Instance.LocalPlayer.Skills != null)
             {
                 if (Instance.LocalPlayer.Skills.AttentionEliteExtraLootExp.Value != true)

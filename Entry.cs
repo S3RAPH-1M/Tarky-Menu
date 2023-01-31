@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using Comfort.Common;
 using EFT;
-using EFT.Interactive;
 using EFT.MovingPlatforms;
-using EFT.SynchronizableObjects;
 using EFT.UI;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Tarky_Menu.Classes;
 using Tarky_Menu.Classes.Misc;
 using Tarky_Menu.Classes.PlayerStats;
@@ -58,7 +56,7 @@ namespace Tarky_Menu
             this.TPUsec = this.Config.Bind("World | AI", "TP All Usec To You", new BepInEx.Configuration.KeyboardShortcut());
             this.TPBear = this.Config.Bind("World | AI", "TP All Bear To You", new BepInEx.Configuration.KeyboardShortcut());
             this.TPScav = this.Config.Bind("World | AI", "TP All Scav To You", new BepInEx.Configuration.KeyboardShortcut());
-            this.SummonReserveTrain = this.Config.Bind("World | Misc", "Summon Reserve Train", new BepInEx.Configuration.KeyboardShortcut());
+            this.SummonReserveTrain = this.Config.Bind("World | Misc", "Summon Extract Train", new BepInEx.Configuration.KeyboardShortcut());
             this.InfAmmo = this.Config.Bind("Weapons | Misc", "Infinite Ammo", false);
             this.QuickThrowNade = this.Config.Bind("Weapons | Misc", "Quick Throw Grenades", false);
             new infiniteammo().Enable();
@@ -108,6 +106,8 @@ namespace Tarky_Menu
             this._health.godMod();
             this._recoilControlSystem.NoRecoil();
             this._weaponUtils.FireMod();
+            this._weaponUtils.NoJamOrHeat();
+            this._weaponUtils.FireRateMod();
             this._cameraUtils.FoVController();
             this._cameraUtils.ScreenFXController();
             this._cameraUtils.ThermalController();

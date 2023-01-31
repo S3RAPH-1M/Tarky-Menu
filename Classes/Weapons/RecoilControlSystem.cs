@@ -1,15 +1,5 @@
-﻿using System;
-using BepInEx;
-using HarmonyLib;
-using BepInEx.Configuration;
-using UnityEngine;
-using EFT;
-using EFT.InventoryLogic;
-using Comfort.Common;
-using System.Collections.Generic;
-using System.Linq;
-using EFT.Ballistics;
-using System.Reflection;
+﻿using BepInEx.Configuration;
+using System;
 using static Tarky_Menu.Entry;
 
 namespace Tarky_Menu.Classes
@@ -24,9 +14,10 @@ namespace Tarky_Menu.Classes
         public ConfigEntry<Single> WalkIntensityValue { get; set; }
         public ConfigEntry<Single> BreathIntensityValue { get; set; }
         public ConfigEntry<Single> ForceReactIntensityValue { get; set; }
+        public ConfigEntry<Single> Z { get; set; }
         public ConfigEntry<Single> MotionReactIntesityValue { get; set; }
         public ConfigEntry<Single> ShootingStiffnessValue { get; set; }
-       
+
 
         public void Awake()
         {
@@ -40,17 +31,15 @@ namespace Tarky_Menu.Classes
 
         public void NoRecoil()
         {
-            if (RCSToggle.Value && Instance.LocalPlayer != null && Singleton<GameWorld>.Instantiated)
+            if (RCSToggle.Value)
             {
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.Shootingg.Intensity != RecoilIntensityValue.Value)
                 {
                     Instance.LocalPlayer.ProceduralWeaponAnimation.Shootingg.Intensity = RecoilIntensityValue.Value;
-
                 }
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.Shootingg.Stiffness != ShootingStiffnessValue.Value)
                 {
                     Instance.LocalPlayer.ProceduralWeaponAnimation.Shootingg.Stiffness = ShootingStiffnessValue.Value;
-
                 }
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.Breath.Intensity != BreathIntensityValue.Value)
                 {
@@ -60,12 +49,10 @@ namespace Tarky_Menu.Classes
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.MotionReact.Intensity != MotionReactIntesityValue.Value)
                 {
                     Instance.LocalPlayer.ProceduralWeaponAnimation.MotionReact.Intensity = MotionReactIntesityValue.Value;
-
                 }
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.ForceReact.Intensity != ForceReactIntensityValue.Value)
                 {
                     Instance.LocalPlayer.ProceduralWeaponAnimation.ForceReact.Intensity = ForceReactIntensityValue.Value;
-
                 }
             }
 
