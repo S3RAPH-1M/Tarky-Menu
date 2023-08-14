@@ -1,4 +1,6 @@
 ﻿using BepInEx.Configuration;
+using Comfort.Common;
+using EFT;
 using System;
 using static Tarky_Menu.Entry;
 
@@ -27,11 +29,12 @@ namespace Tarky_Menu.Classes
             this.ForceReactIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Force Reaction Value", 1f);
             this.MotionReactIntesityValue = Instance.Config.Bind("Weapon | Recoil", "Motion Reaction Value", 1f);
             this.BreathIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Breath Intensity Value", 1f);
+            this.WalkIntensityValue = Instance.Config.Bind("Weapon | Recoil", "Walk Intensity Value", 1f);
         }
 
         public void NoRecoil()
         {
-            if (RCSToggle.Value)
+            if (RCSToggle.Value && Singleton<GameWorld>.Instantiated && Instance.LocalPlayer != null)
             {
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.Shootingg.Intensity != RecoilIntensityValue.Value)
                 {
@@ -53,6 +56,10 @@ namespace Tarky_Menu.Classes
                 if (Instance.LocalPlayer.ProceduralWeaponAnimation.ForceReact.Intensity != ForceReactIntensityValue.Value)
                 {
                     Instance.LocalPlayer.ProceduralWeaponAnimation.ForceReact.Intensity = ForceReactIntensityValue.Value;
+                }
+                if (Instance.LocalPlayer.ProceduralWeaponAnimation.Walk.Intensity != WalkIntensityValue.Value)
+                {
+                    Instance.LocalPlayer.ProceduralWeaponAnimation.Walk.Intensity = WalkIntensityValue.Value;
                 }
             }
 

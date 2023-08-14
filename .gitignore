@@ -1,3 +1,9 @@
 bin/
 *.dll
 *.cache
+Classes/Development/Development.cs
+obj/
+*.dll
+*.pdb
+*.txt
+*.cache

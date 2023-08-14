@@ -12,6 +12,7 @@ namespace Tarky_Menu.Classes.PlayerStats
         private static String[] TargetBones = { "head", "spine3", "spine2", "spine1" };
         public ConfigEntry<Boolean> Godmode { get; private set; }
         public ConfigEntry<Boolean> Demigod { get; private set; }
+        public ConfigEntry<float> DamageMultiplier { get; private set; }
         public Boolean Heal { get; private set; }
         public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> HealButton { get; private set; }
         public ConfigEntry<Boolean> NoFall { get; private set; }
@@ -27,6 +28,7 @@ namespace Tarky_Menu.Classes.PlayerStats
         {
             this.Godmode = Instance.Config.Bind("Player | Health", "Godmode", false, "Invincible");
             this.Demigod = Instance.Config.Bind("Player | Health", "Demi-God", false, "Only ur head and thorax are invincible");
+            this.DamageMultiplier = Instance.Config.Bind("Player | Health", "Damage Multiplier", 1f);
             this.HealButton = Instance.Config.Bind("Player | Health", "Heal", new BepInEx.Configuration.KeyboardShortcut());
             this.NoFall = Instance.Config.Bind("Player | Health", "No Fall Damage", false);
             this.HungerEnergyDrain = Instance.Config.Bind("Player | Health", "No Energy/Hunger Drain", false);
@@ -65,12 +67,12 @@ namespace Tarky_Menu.Classes.PlayerStats
 
                     // if ChestHP.Current is less than 45
 
-                    if (ChestHP.Current < 45)
+                    if (ChestHP.Current < ChestHP.Maximum / 2)
                     {
                         Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Chest);
                         Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Chest, ChestHP.Maximum, default);
                     }
-                    if (HeadHP.Current < 18)
+                    if (HeadHP.Current < HeadHP.Maximum / 2)
                     {
                         Instance.LocalPlayer.ActiveHealthController.RemoveNegativeEffects(EBodyPart.Head);
                         Instance.LocalPlayer.ActiveHealthController.ChangeHealth(EBodyPart.Head, HeadHP.Maximum, default);
@@ -95,6 +97,7 @@ namespace Tarky_Menu.Classes.PlayerStats
                     Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = 9999999f;
                     HasDoneNoFall = true;
                 }
+
                 if (!NoFall.Value && HasDoneNoFall == true)
                 {
                     Instance.LocalPlayer.ActiveHealthController.FallSafeHeight = originalFallValue;
@@ -111,6 +114,13 @@ namespace Tarky_Menu.Classes.PlayerStats
                         Heal = false;
                     }
                 }
+
+                if (HungerEnergyDrain.Value)
+                {
+                    Instance.LocalPlayer.ActiveHealthController.ChangeEnergy(100f);
+                    Instance.LocalPlayer.ActiveHealthController.ChangeHydration(100f);
+                }
+
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using Aki.Reflection.Patching;
 using EFT.Ballistics;
 using EFT.InventoryLogic;
+using System.Linq;
 using System.Reflection;
 
 namespace Tarky_Menu.Classes.Weapons
@@ -11,35 +12,35 @@ namespace Tarky_Menu.Classes.Weapons
 
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(BallisticsCalculator).GetMethod("Shoot");
+            return typeof(BallisticsCalculator).GetMethod(nameof(BallisticsCalculator.Shoot));
         }
 
         [PatchPostfix]
-        private static void Postfix(GClass2609 shot)
+        private static void Postfix(GClass2765 shot)
         {
-            Weapon weapon = null;
-            bool flag;
-            if (Entry.Instance.InfAmmo.Value && shot.Player.IsYourPlayer)
+            if (!Entry.Instance.InfAmmo.Value || !shot.Player.iPlayer.IsYourPlayer ||
+                !(shot.Weapon is Weapon weapon) || shot.Ammo.Template.Name.ToLower().StartsWith("shrapnel"))
             {
-                weapon = (shot.Weapon as Weapon);
-                flag = (weapon != null);
+                return;
             }
-            else
+
+            MagazineClass magazine = weapon.GetCurrentMagazine();
+            switch (magazine)
             {
-                flag = false;
-            }
-            bool flag2 = flag;
-            if (flag2)
-            {
-                MagazineClass currentMagazine = weapon.GetCurrentMagazine();
-                if (currentMagazine != null)
-                {
-                    StackSlot cartridges = currentMagazine.Cartridges;
-                    if (cartridges != null)
+                case null:
+                    weapon.FirstFreeChamberSlot?.AddWithoutRestrictions(Utils.CreateItem<BulletClass>(shot.Ammo.TemplateId, default) ??
+                                                     shot.Ammo);
+                    return;
+                case CylinderMagazineClass gClass2120:
                     {
-                        cartridges.Add(Utils.CreateItem<Item>(shot.Ammo.TemplateId, null) ?? shot.Ammo, false);
+                        gClass2120.Camoras.FirstOrDefault(c => c.ContainedItem == null)
+                            ?.AddWithoutRestrictions(Utils.CreateItem<BulletClass>(shot.Ammo.TemplateId, default) ?? shot.Ammo);
+                        return;
                     }
-                }
+                default:
+                    magazine.Cartridges?.Add(Utils.CreateItem<BulletClass>(shot.Ammo.TemplateId, default) ?? shot.Ammo,
+                        false);
+                    return;
             }
         }
     }

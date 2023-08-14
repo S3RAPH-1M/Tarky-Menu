@@ -9,7 +9,7 @@ namespace Tarky_Menu.Classes.PlayerStats
     public class SkillzClass
     {
         public ConfigEntry<Boolean> StealthStaminaToggle { get; set; }
-        public ConfigEntry<Boolean> MaxStaminaToggle { get; set; }
+        public ConfigEntry<Boolean> StaminaToggle { get; set; }
         public ConfigEntry<Boolean> MaxMelee { get; private set; }
         public ConfigEntry<Boolean> InstaSearch { get; private set; }
         public ConfigEntry<Boolean> NoRestraints { get; private set; }
@@ -19,6 +19,7 @@ namespace Tarky_Menu.Classes.PlayerStats
         public void Awake()
         {
             this.StealthStaminaToggle = Instance.Config.Bind("Player | Skills", "Stealth Infinite Stamina", false, "Replenish Stamina Instantly When Its Low");
+            this.StaminaToggle = Instance.Config.Bind("Player | Skills", "Infinite Stamina", false, "Always Replenish Stamina Instantly");
             this.InstaSearch = Instance.Config.Bind("Player | Skills", "Instant Search", false);
             this.MaxMelee = Instance.Config.Bind("Player | Skills", "Max Melee", false, "Insta-Kills on melee");
             this.NoRestraints = Instance.Config.Bind("Player | Weights", "No Speed Limiters", false, "Weight, Aiming and other speed limiters are off");
@@ -38,6 +39,22 @@ namespace Tarky_Menu.Classes.PlayerStats
                     Instance.LocalPlayer.Physical.HandsStamina.Current = Instance.LocalPlayer.Physical.HandsStamina.TotalCapacity.Value;
                 }
                 if (Instance.LocalPlayer.Physical.Oxygen.Current < 75)
+                {
+                    Instance.LocalPlayer.Physical.Oxygen.Current = Instance.LocalPlayer.Physical.Oxygen.TotalCapacity.Value;
+                }
+            }
+
+            if (StaminaToggle.Value && Instance.LocalPlayer != null && Instance.LocalPlayer.Physical != null)
+            {
+                if (Instance.LocalPlayer.Physical.Stamina.Current < 99)
+                {
+                    Instance.LocalPlayer.Physical.Stamina.Current = Instance.LocalPlayer.Physical.Stamina.TotalCapacity.Value;
+                }
+                if (Instance.LocalPlayer.Physical.HandsStamina.Current < 99)
+                {
+                    Instance.LocalPlayer.Physical.HandsStamina.Current = Instance.LocalPlayer.Physical.HandsStamina.TotalCapacity.Value;
+                }
+                if (Instance.LocalPlayer.Physical.Oxygen.Current < 99)
                 {
                     Instance.LocalPlayer.Physical.Oxygen.Current = Instance.LocalPlayer.Physical.Oxygen.TotalCapacity.Value;
                 }

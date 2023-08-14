@@ -9,9 +9,9 @@ namespace Tarky_Menu.Classes
     public static class Utils
     {
 
-        public static InventoryClass GetInventory(this Player player)
+        public static Inventory GetInventory(this Player player)
         {
-            return typeof(Player).GetProperty("Inventory", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(player) as InventoryClass;
+            return typeof(Player).GetProperty("Inventory", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(player) as Inventory;
         }
 
         public static InventoryControllerClass GetInventoryController(this Player player)

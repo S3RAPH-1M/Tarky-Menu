@@ -1,7 +1,9 @@
 ﻿using BepInEx.Configuration;
+using EFT;
 using EFT.Interactive;
 using System;
 using System.Reflection;
+using UnityEngine;
 using static Tarky_Menu.Entry;
 
 namespace Tarky_Menu.Classes.Misc
@@ -9,8 +11,8 @@ namespace Tarky_Menu.Classes.Misc
     internal class WorldUtils
     {
         public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> DoorUnlock { get; private set; }
-        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> PowerButton { get; private set; }
         public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> DoorKicker { get; private set; }
+        public ConfigEntry<BepInEx.Configuration.KeyboardShortcut> PowerButton { get; private set; }
         public ConfigEntry<Boolean> AllKeys { get; private set; }
         public ConfigEntry<Boolean> Noclip { get; private set; }
 
@@ -96,6 +98,15 @@ namespace Tarky_Menu.Classes.Misc
                     }
                 }
             }
+        }
+
+        public void TurnOnPower()
+        {
+/*            if (PowerButton.Value.IsDown())
+            {
+                var PowerSwitch = GameObject.FindObjectOfType<Switch>();
+                PowerSwitch.Interact(new GClass2846(EInteractionType.Open));
+            }*/
         }
     }
 }

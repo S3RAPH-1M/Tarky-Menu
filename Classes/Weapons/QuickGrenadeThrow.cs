@@ -16,7 +16,7 @@ namespace Tarky_Menu.Classes.Weapons
         }
 
         [PatchPrefix]
-        private static Boolean Prefix(Player __instance, GrenadeClass throwWeap, Callback<GInterface110> callback)
+        private static Boolean Prefix(Player __instance, GrenadeClass throwWeap, Callback<IHandsController> callback)
         {
             if (Entry.Instance.LocalPlayer != null && Entry.Instance.QuickThrowNade.Value)
             {
