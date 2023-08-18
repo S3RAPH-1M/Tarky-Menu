@@ -69,8 +69,8 @@ namespace Tarky_Menu.Classes.Misc
                                 return;
                             }
                         }
-                        CameraClass.Instance.SetFov(FOV.Value, 0.08f, true);
-                        CameraClass.Instance.Camera.nearClipPlane = 0.001f;
+                        CameraClass.Instance.SetFov(FOV.Value, 0f, true);
+                        CameraClass.Instance.Camera.nearClipPlane = 0.005f;
                         timer = 0f;
                     }
                 }
